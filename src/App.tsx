@@ -1,5 +1,5 @@
 import { SiteHeader } from "@/components/SiteHeader";
-import { DottedGrid } from "@/components/DottedGrid";
+import { DottedGrid } from "@/components/ui/dotted-grid";
 import { PageReveal } from "@/components/PageReveal";
 import { ContactList } from "@/components/ContactList";
 import { Gallery4, type Gallery4Item } from "@/components/ui/gallery4";
@@ -70,7 +70,7 @@ function App() {
         <main id="main">
           <section className="intro" aria-labelledby="intro-heading">
             <div className="intro__inner">
-              <h1 id="intro-heading" className="intro__name">
+              <h1 id="intro-heading" className="intro__name sr-only">
                 JRAG
               </h1>
               <p className="intro__tagline">
