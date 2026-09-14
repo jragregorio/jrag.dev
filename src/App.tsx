@@ -18,6 +18,15 @@ const workItems: Gallery4Item[] = [
     imageClassName: "object-[72%_center]",
   },
   {
+    id: "pixel-maze",
+    title: "Pixel Maze",
+    description:
+      "Player site for an online casino, with an admin dashboard and CRM for operators.",
+    href: "https://www.pixel-maze.com/",
+    image: asset("projects/pixel-maze.png"),
+    imageClassName: "object-[center_30%]",
+  },
+  {
     id: "sitcheck",
     title: "SitCheck",
     description:
@@ -36,15 +45,6 @@ const workItems: Gallery4Item[] = [
     imageClassName: "object-top",
   },
   {
-    id: "pixel-maze",
-    title: "Pixel Maze",
-    description:
-      "Player site for an online casino, with an admin dashboard and CRM for operators.",
-    href: "https://www.pixel-maze.com/",
-    image: asset("projects/pixel-maze.png"),
-    imageClassName: "object-[center_30%]",
-  },
-  {
     id: "lsqb",
     title: "LuxeShade Quote Builder",
     description:
@@ -52,6 +52,7 @@ const workItems: Gallery4Item[] = [
     href: "",
     image: asset("projects/lsqb.png"),
     imageClassName: "object-[center_18%]",
+    isPrivate: true,
   },
 ];
 

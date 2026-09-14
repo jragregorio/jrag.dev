@@ -17,6 +17,7 @@ export interface Gallery4Item {
   href: string;
   image: string;
   imageClassName?: string;
+  isPrivate?: boolean;
 }
 
 export interface Gallery4Props {
@@ -39,7 +40,8 @@ function GalleryCard({
   isActive: boolean;
   onFocusSlide: () => void;
 }) {
-  const canOpen = isActive && hasExternalHref(item.href);
+  const canOpen = isActive && !item.isPrivate && hasExternalHref(item.href);
+  const showPrivate = isActive && item.isPrivate;
 
   const card = (
     <div
@@ -67,6 +69,8 @@ function GalleryCard({
             Open{" "}
             <ArrowRight className="ml-2 size-5 transition-transform group-hover:translate-x-1" />
           </div>
+        ) : showPrivate ? (
+          <div className="text-sm text-muted-foreground">Private</div>
         ) : null}
       </div>
     </div>
