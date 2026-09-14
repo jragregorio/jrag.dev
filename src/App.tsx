@@ -4,12 +4,12 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { DottedGrid } from "@/components/ui/dotted-grid";
 import { PageReveal } from "@/components/PageReveal";
 import { ContactList } from "@/components/ContactList";
-import { Gallery4, type Gallery4Item } from "@/components/ui/gallery4";
+import { WorkStack, type WorkStackItem } from "@/components/WorkStack";
 
 const asset = (file: string) =>
   `${import.meta.env.BASE_URL}${file.replace(/^\//, "")}`;
 
-const workItems: Gallery4Item[] = [
+const workItems: WorkStackItem[] = [
   {
     id: "warden",
     title: "Warden",
@@ -17,7 +17,7 @@ const workItems: Gallery4Item[] = [
       "Parental screen time for Windows, with a web dashboard and an Android app. Parents set a daily limit; the child's PC enforces it.",
     href: "https://warden-alpha.vercel.app/",
     image: asset("projects/warden.png"),
-    imageClassName: "object-[72%_center]",
+    imageClassName: "object-top",
   },
   {
     id: "pixel-maze",
@@ -53,7 +53,7 @@ const workItems: Gallery4Item[] = [
       "A private quote tool for LuxeShade. Materials, measurements, and pricing for curtain jobs.",
     href: "",
     image: asset("projects/lsqb.png"),
-    imageClassName: "object-[center_18%]",
+    imageClassName: "object-top",
     isPrivate: true,
   },
 ];
@@ -88,7 +88,7 @@ function App() {
 
       <PageReveal>
         <div className="page-reveal__work">
-          <Gallery4 items={workItems} />
+          <WorkStack items={workItems} />
         </div>
         <section
           id="contact"
