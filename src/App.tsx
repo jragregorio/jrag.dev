@@ -1,3 +1,5 @@
+import { ChevronDown } from "lucide-react";
+
 import { SiteHeader } from "@/components/SiteHeader";
 import { DottedGrid } from "@/components/ui/dotted-grid";
 import { PageReveal } from "@/components/PageReveal";
@@ -76,6 +78,9 @@ function App() {
               <p className="intro__tagline">
                 I build software for people who use it every day.
               </p>
+            </div>
+            <div className="intro__scroll" aria-hidden="true">
+              <ChevronDown strokeWidth={1.75} />
             </div>
           </section>
         </main>
