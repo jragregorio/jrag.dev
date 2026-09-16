@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-import { isWorkUnlocked, snapWorkIntoView } from "@/lib/curtain";
+import {
+  cancelCurtainDown,
+  isCurtainDownRunning,
+  isWorkUnlocked,
+  snapSlightRevealToHome,
+} from "@/lib/curtain";
 
 const AXIS_LOCK_PX = 12;
+const WHEEL_SETTLE_MS = 125;
 
 type GestureAxis = "pending" | "x" | "y";
 
@@ -25,6 +31,37 @@ export function PageReveal({ children }: { children: ReactNode }) {
       return;
     }
 
+    let wheelSettleTimer: ReturnType<typeof setTimeout> | null = null;
+    let peekedTowardHome = false;
+
+    const maybeSnapToHome = () => {
+      if (isCurtainDownRunning()) {
+        return;
+      }
+
+      if (!unlockedRef.current || inner.scrollTop !== 0) {
+        peekedTowardHome = false;
+        return;
+      }
+
+      if (!peekedTowardHome) {
+        return;
+      }
+
+      snapSlightRevealToHome(reveal);
+      peekedTowardHome = false;
+    };
+
+    const scheduleSnapToHome = () => {
+      if (wheelSettleTimer !== null) {
+        clearTimeout(wheelSettleTimer);
+      }
+      wheelSettleTimer = setTimeout(() => {
+        wheelSettleTimer = null;
+        maybeSnapToHome();
+      }, WHEEL_SETTLE_MS);
+    };
+
     const update = () => {
       const unlocked = isWorkUnlocked(
         reveal.getBoundingClientRect().top,
@@ -38,14 +75,22 @@ export function PageReveal({ children }: { children: ReactNode }) {
     };
 
     const onWheel = (event: WheelEvent) => {
+      cancelCurtainDown();
       if (!unlockedRef.current || inner.scrollTop > 0 || event.deltaY >= 0) {
         return;
       }
       event.preventDefault();
+      peekedTowardHome = true;
       window.scrollBy(0, event.deltaY);
+      scheduleSnapToHome();
+    };
+
+    const onScrollEnd = () => {
+      maybeSnapToHome();
     };
 
     const onTouchStart = (event: TouchEvent) => {
+      cancelCurtainDown();
       const touch = event.touches[0];
       if (!touch) {
         return;
@@ -89,13 +134,12 @@ export function PageReveal({ children }: { children: ReactNode }) {
       }
 
       event.preventDefault();
+      peekedTowardHome = true;
       window.scrollBy(0, -step);
     };
 
     const onTouchEnd = () => {
-      if (unlockedRef.current) {
-        snapWorkIntoView(reveal);
-      }
+      maybeSnapToHome();
       gesture.current.axis = "pending";
     };
 
@@ -107,19 +151,29 @@ export function PageReveal({ children }: { children: ReactNode }) {
 
     update();
     window.addEventListener("scroll", update, { passive: true });
+    if ("onscrollend" in window) {
+      window.addEventListener("scrollend", onScrollEnd);
+    }
     window.addEventListener("resize", update);
     inner.addEventListener("scroll", onInnerScroll, { passive: true });
-    inner.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("wheel", onWheel, { capture: true, passive: false });
     inner.addEventListener("touchstart", onTouchStart, { passive: true });
     inner.addEventListener("touchmove", onTouchMove, { passive: false });
     inner.addEventListener("touchend", onTouchEnd);
     inner.addEventListener("touchcancel", onTouchEnd);
 
     return () => {
+      cancelCurtainDown();
+      if (wheelSettleTimer !== null) {
+        clearTimeout(wheelSettleTimer);
+      }
       window.removeEventListener("scroll", update);
+      if ("onscrollend" in window) {
+        window.removeEventListener("scrollend", onScrollEnd);
+      }
       window.removeEventListener("resize", update);
       inner.removeEventListener("scroll", onInnerScroll);
-      inner.removeEventListener("wheel", onWheel);
+      window.removeEventListener("wheel", onWheel, { capture: true });
       inner.removeEventListener("touchstart", onTouchStart);
       inner.removeEventListener("touchmove", onTouchMove);
       inner.removeEventListener("touchend", onTouchEnd);
