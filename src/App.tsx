@@ -1,10 +1,11 @@
 import { ChevronDown } from "lucide-react";
 
-import { SiteHeader } from "@/components/SiteHeader";
+import FloatingMenu from "@/components/ui/liquid-morph-floating-menu";
 import { DottedGrid } from "@/components/ui/dotted-grid";
 import { PageReveal } from "@/components/PageReveal";
 import { ContactList } from "@/components/ContactList";
 import { WorkStack, type WorkStackItem } from "@/components/WorkStack";
+import { scrollToContact, scrollToHome, scrollToWork } from "@/lib/nav";
 
 const asset = (file: string) =>
   `${import.meta.env.BASE_URL}${file.replace(/^\//, "")}`;
@@ -74,8 +75,6 @@ function App() {
         Skip to content
       </a>
 
-      <SiteHeader />
-
       <div className="page-curtain">
         <DottedGrid />
         <main id="main">
@@ -113,6 +112,14 @@ function App() {
           <p>JRAG</p>
         </footer>
       </PageReveal>
+
+      <FloatingMenu
+        items={[
+          { label: "Home", onClick: scrollToHome },
+          { label: "Work", onClick: scrollToWork },
+          { label: "Contact", onClick: scrollToContact },
+        ]}
+      />
     </>
   );
 }
