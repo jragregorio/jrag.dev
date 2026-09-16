@@ -20,6 +20,15 @@ const workItems: WorkStackItem[] = [
     imageClassName: "object-top",
   },
   {
+    id: "feelpet",
+    title: "Feel pet",
+    description:
+      "Online pet memorials in Matterport 3D spaces. Owners create a private altar, share it with family, and pay with Stripe. Built in Bubble, with an admin dashboard.",
+    href: "https://feelpet.co.jp",
+    image: asset("projects/feelpet.png"),
+    imageClassName: "object-top",
+  },
+  {
     id: "pixel-maze",
     title: "Pixel Maze",
     description:
