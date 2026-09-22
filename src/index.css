@@ -380,8 +380,10 @@
 
   .work-stack__media {
     flex: 0 0 auto;
+    align-self: center;
     width: min(420px, 100%);
     aspect-ratio: 420 / 435;
+    margin-inline: auto;
     border: 1px solid var(--rule);
     border-radius: 0.5rem;
   }
